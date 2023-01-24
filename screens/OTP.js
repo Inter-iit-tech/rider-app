@@ -10,25 +10,30 @@ import { Alert } from "react-native";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
+  console.log(route.params.verificationId);
   //   const [verificationId, setVerificationId] = useState(
   //     route.params.verificationId
   //   );
   const confirmCode = () => {
+    console.log(otp);
+    const verificationId = route.params.verificationId;
     const credential = firebase.auth.PhoneAuthProvider.credential(
       verificationId,
-      code
+      otp
     );
     firebase
       .auth()
       .signInWithCredential(credential)
       .then(() => {
-        setCode("");
+        setOTP("");
+        Alert.alert("OTP Successful. Welcome to Dashboard.");
       })
       .catch((error) => {
         // show an alert in case of error
-        Alert.alert("Invalid otp");
+        console.log(error);
+
+        Alert.alert("Invalid otp or otp expired");
       });
-    Alert.alert("OTP Successful. Welcome to Dashboard.");
   };
   const handleTextChange = (text) => {
     setOTP(text);
@@ -44,7 +49,7 @@ export default function OTP({ route }) {
       </View>
       <View>
         <View style={styles.content}>
-          <Text style={styles.heading}>OTP Confirmation </Text>
+          <Text style={styles.heading}>OTP Confirmation '</Text>
           <Text style={styles.subtext}>Please enter the one time password</Text>
           <View style={{ width: "100%", marginTop: 40 }}>
             <Input

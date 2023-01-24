@@ -16,7 +16,8 @@ export default function Login({}) {
   const navigation = useNavigation();
 
   const sendVerification = () => {
-    // navigation.navigate("otp");
+    // navigation.push("otp");
+    console.log(mobile);
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
     phoneProvider
       .verifyPhoneNumber(mobile, recaptchaVerifier.current)
@@ -26,6 +27,7 @@ export default function Login({}) {
         });
       })
       .catch((err) => {
+        console.log(err);
         Alert.alert("Invalid mobile number or internal server error");
       });
   };

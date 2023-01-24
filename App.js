@@ -1,4 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
+import "react-native-gesture-handler";
 import {
   StyleSheet,
   Text,
@@ -12,7 +13,6 @@ import Login from "./screens/Login";
 import Otp from "./screens/OTP";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import "react-native-gesture-handler";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -24,12 +24,12 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={Login}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
             name="otp"
             component={Otp}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen name="Maps" component={MapTestScreen} />
         </Stack.Navigator>
