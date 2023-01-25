@@ -31,7 +31,11 @@ export default function App() {
             component={Otp}
             options={{ headerShown: false, animation: "none" }}
           />
-          <Stack.Screen name="Maps" component={MapTestScreen} />
+          <Stack.Screen
+            name="Maps"
+            component={MapTestScreen}
+            options={{ headerShown: true, animation: "none" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
