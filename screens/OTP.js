@@ -3,17 +3,22 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
 import { Button } from "@rneui/themed";
-import { firebaseConfig } from "../utils/firebaseConfig";
 import firebase from "firebase/compat";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { Alert } from "react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
-  console.log(route.params.verificationId);
-  //   const [verificationId, setVerificationId] = useState(
-  //     route.params.verificationId
-  //   );
+  const navigation = useNavigation();
+
+  const resetNavigation = () => {
+    navigation.dispatch((state) => {
+      return CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Maps" }],
+      });
+    });
+  };
   const confirmCode = () => {
     console.log(otp);
     const verificationId = route.params.verificationId;
@@ -27,6 +32,7 @@ export default function OTP({ route }) {
       .then(() => {
         setOTP("");
         Alert.alert("OTP Successful. Welcome to Dashboard.");
+        resetNavigation();
       })
       .catch((error) => {
         // show an alert in case of error
