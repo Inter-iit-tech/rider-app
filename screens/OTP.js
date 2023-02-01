@@ -13,6 +13,8 @@ export default function OTP({ route }) {
   const navigation = useNavigation();
   const authContext = useAuthContext();
 
+  // programmatically navigating to the maps page is no longer necessary
+  // and the resetNavigation function can be omitted
   const resetNavigation = () => {
     navigation.dispatch((state) => {
       return CommonActions.reset({
@@ -36,7 +38,7 @@ export default function OTP({ route }) {
         setOTP("");
         authContext.login(userCredential.user);
         Alert.alert("OTP Successful. Welcome to Dashboard.");
-        resetNavigation();
+        // resetNavigation();
       })
       .catch((error) => {
         // show an alert in case of error
