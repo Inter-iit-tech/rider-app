@@ -22,7 +22,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Home"
             component={Login}
             options={{ headerShown: false, animation: "none" }}
@@ -31,7 +31,7 @@ export default function App() {
             name="otp"
             component={Otp}
             options={{ headerShown: false, animation: "none" }}
-          />
+          /> */}
           <Stack.Screen
             name="Maps"
             component={MapTestScreen}

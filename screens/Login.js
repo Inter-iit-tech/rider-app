@@ -11,7 +11,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Login({}) {
   const [mobile, setMobile] = useState("+91");
-  const [verificationId, setVerificationId] = useState(null);
   const recaptchaVerifier = useRef(null);
   const navigation = useNavigation();
 
@@ -32,23 +31,6 @@ export default function Login({}) {
       });
   };
 
-  const confirmCode = () => {
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-      verificationId,
-      code
-    );
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then(() => {
-        setCode("");
-      })
-      .catch((error) => {
-        // show an alert in case of error
-        Alert.alert("Invalid mobile number");
-      });
-    Alert.alert("Login Successful. Welcome to Dashboard.");
-  };
   const handleTextChange = (text) => {
     setMobile(text);
   };
