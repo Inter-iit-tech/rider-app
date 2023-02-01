@@ -14,37 +14,40 @@ import Login from "./screens/Login";
 import Otp from "./screens/OTP";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AuthContextProvider } from "./contexts/authContext";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   console.log(StatusBar.currentHeight);
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {/* <Stack.Screen
-            name="Home"
-            component={Login}
-            options={{ headerShown: false, animation: "none" }}
-          />
-          <Stack.Screen
-            name="otp"
-            component={Otp}
-            options={{ headerShown: false, animation: "none" }}
-          /> */}
-          <Stack.Screen
-            name="Maps"
-            component={MapTestScreen}
-            options={{ headerShown: true, animation: "none" }}
-          />
-          <Stack.Screen
-            name="MapsSim"
-            component={MapSimulationTestScreen}
-            options={{ headerShown: true, animation: "none" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <AuthContextProvider>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={Login}
+              options={{ headerShown: false, animation: "none" }}
+            />
+            <Stack.Screen
+              name="otp"
+              component={Otp}
+              options={{ headerShown: false, animation: "none" }}
+            />
+            <Stack.Screen
+              name="Maps"
+              component={MapTestScreen}
+              options={{ headerShown: true, animation: "none" }}
+            />
+            <Stack.Screen
+              name="MapsSim"
+              component={MapSimulationTestScreen}
+              options={{ headerShown: true, animation: "none" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </AuthContextProvider>
   );
 }
 

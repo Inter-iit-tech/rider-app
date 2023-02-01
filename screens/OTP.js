@@ -1,15 +1,17 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { Button } from "@rneui/themed";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import firebase from "firebase/compat";
+
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
-import { Button } from "@rneui/themed";
-import firebase from "firebase/compat";
-import { Alert } from "react-native";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import useAuthContext from "../hooks/useAuthContext";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
   const navigation = useNavigation();
+  const authContext = useAuthContext();
 
   const resetNavigation = () => {
     navigation.dispatch((state) => {
@@ -19,6 +21,7 @@ export default function OTP({ route }) {
       });
     });
   };
+
   const confirmCode = () => {
     console.log(otp);
     const verificationId = route.params.verificationId;
@@ -29,8 +32,9 @@ export default function OTP({ route }) {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .then(() => {
+      .then((userCredential) => {
         setOTP("");
+        authContext.login(userCredential.user);
         Alert.alert("OTP Successful. Welcome to Dashboard.");
         resetNavigation();
       })
@@ -41,9 +45,11 @@ export default function OTP({ route }) {
         Alert.alert("Invalid otp or otp expired");
       });
   };
+
   const handleTextChange = (text) => {
     setOTP(text);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
