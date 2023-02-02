@@ -32,10 +32,10 @@ const MapSimulationTestScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentLocation, setCurrentLocation] = useState({});
 
-  const getRouteBetweenTwoOrders = (order1, order2) => {
+  const getRouteBetweenTwoOrders = (orders) => {
     console.log("Called getRouteBetweenTwoOrders");
 
-    const dummy = [order1, order2];
+    const dummy = orders;
     const uri = generateOSRMUri(dummy);
 
     axios
@@ -115,7 +115,11 @@ const MapSimulationTestScreen = () => {
           location: { lat: 12.95622074081024, lng: 77.69492603332334 },
         };
 
-        getRouteBetweenTwoOrders(o9, o10);
+        const o11 = {
+          location: { lat: 12.956197904510958, lng: 77.69468372922866 },
+        };
+
+        getRouteBetweenTwoOrders([o11, o10, o9]);
         // getRouteBetweenTwoOrders(locOrders[0], locOrders[1]);
       })
       .catch((err) => {
@@ -216,7 +220,7 @@ const MapSimulationTestScreen = () => {
         }
       })} */}
 
-      {testRider.tours[0].map((order, i) => {
+      {/* {testRider.tours[0].map((order, i) => {
         if (i !== 0) {
           return (
             <Marker
@@ -244,7 +248,7 @@ const MapSimulationTestScreen = () => {
             </Marker>
           );
         }
-      })}
+      })} */}
 
       {!loading && route?.length > 0 ? (
         <Polyline
