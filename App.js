@@ -1,60 +1,18 @@
 // import { StatusBar } from "expo-status-bar";
 import "react-native-gesture-handler";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from "react-native";
 
-import {
-  Login,
-  OTP,
-  MapSimulationTestScreen,
-  MapTestScreen,
-  LocationTest,
-} from "./screens";
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-const Stack = createNativeStackNavigator();
+import { AuthContextProvider } from "./contexts/authContext";
+import AppNavigator from "./navigation";
 
 export default function App() {
   console.log(StatusBar.currentHeight);
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="LocationTest"
-            component={LocationTest}
-            options={{ headerShown: true, animation: "none" }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={Login}
-            options={{ headerShown: false, animation: "none" }}
-          />
-          <Stack.Screen
-            name="otp"
-            component={OTP}
-            options={{ headerShown: false, animation: "none" }}
-          />
-          <Stack.Screen
-            name="Maps"
-            component={MapTestScreen}
-            options={{ headerShown: true, animation: "none" }}
-          />
-          <Stack.Screen
-            name="MapsSim"
-            component={MapSimulationTestScreen}
-            options={{ headerShown: true, animation: "none" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <AuthContextProvider>
+      <SafeAreaView style={styles.container}>
+        <AppNavigator />
+      </SafeAreaView>
+    </AuthContextProvider>
   );
 }
 

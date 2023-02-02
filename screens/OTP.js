@@ -1,19 +1,29 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { Button } from "@rneui/themed";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import firebase from "firebase/compat";
+
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
-import { Button } from "@rneui/themed";
-import { firebaseConfig } from "../utils/firebaseConfig";
-import firebase from "firebase/compat";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { Alert } from "react-native";
+import useAuthContext from "../hooks/useAuthContext";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
-  console.log(route.params.verificationId);
-  //   const [verificationId, setVerificationId] = useState(
-  //     route.params.verificationId
-  //   );
+  const navigation = useNavigation();
+  const authContext = useAuthContext();
+
+  // programmatically navigating to the maps page is no longer necessary
+  // and the resetNavigation function can be omitted
+  const resetNavigation = () => {
+    navigation.dispatch((state) => {
+      return CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Maps" }],
+      });
+    });
+  };
+
   const confirmCode = () => {
     console.log(otp);
     const verificationId = route.params.verificationId;
@@ -24,9 +34,11 @@ export default function OTP({ route }) {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .then(() => {
+      .then((userCredential) => {
         setOTP("");
+        authContext.login(userCredential.user);
         Alert.alert("OTP Successful. Welcome to Dashboard.");
+        // resetNavigation();
       })
       .catch((error) => {
         // show an alert in case of error
@@ -35,9 +47,11 @@ export default function OTP({ route }) {
         Alert.alert("Invalid otp or otp expired");
       });
   };
+
   const handleTextChange = (text) => {
     setOTP(text);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
