@@ -22,7 +22,7 @@ export default function AppNavigator() {
         <AuthStack.Screen
           name="Home"
           component={Login}
-          options={{ title: "Login", headerShown: false }}
+          options={{ title: "Login", headerShown: false, animation: "none" }}
         />
         <AuthStack.Screen
           name="otp"
@@ -30,6 +30,7 @@ export default function AppNavigator() {
           options={{
             title: "Verify OTP",
             headerShown: false,
+            animation: "none",
           }}
         />
       </AuthStack.Navigator>
@@ -49,7 +50,7 @@ export default function AppNavigator() {
         />
         <MainTabs.Screen
           name="Map"
-          component={MapTestScreen}
+          component={MapSimulationTestScreen}
           options={{
             tabBarIcon: () => <Icon name="route" type="font-awesome-5" />,
           }}
@@ -58,10 +59,10 @@ export default function AppNavigator() {
     );
   };
 
-  let content = <AuthStackNavigator />;
-  if (user) {
-    content = <MainTabsNavigator />;
-  }
+  // let content = <AuthStackNavigator />;
+  // if (user) {
+  content = <MainTabsNavigator />;
+  // }/
 
   return <NavigationContainer>{content}</NavigationContainer>;
 }
