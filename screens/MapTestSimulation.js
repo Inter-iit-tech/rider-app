@@ -9,6 +9,7 @@ import MapView, {
 import { View, Text, StyleSheet } from "react-native";
 import { generateOSRMUri, getPolylineCoordinates } from "../utils/routeUtils";
 import importedOrders from "../samples/orders";
+import testRider from "../samples/riderProfile";
 
 const mapStandardStyle = [
   {
@@ -31,9 +32,39 @@ const MapSimulationTestScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentLocation, setCurrentLocation] = useState({});
 
-  useEffect(() => {
-    const OSRMUri = generateOSRMUri(orders);
+  const getRouteBetweenTwoOrders = (order1, order2) => {
+    console.log("Called getRouteBetweenTwoOrders");
 
+    const dummy = [order1, order2];
+    const uri = generateOSRMUri(dummy);
+
+    axios
+      .get(uri)
+      .then((routeResponse) => {
+        let result = [];
+        const encodedPolyline = routeResponse?.data?.routes?.[0]?.geometry;
+        const polylineCoordinates = getPolylineCoordinates(encodedPolyline);
+        result = polylineCoordinates;
+
+        console.log({ dummyResult: result, l: result.length });
+        const initialLocation = [[result[0]]];
+
+        setFirstRoute(result);
+        setTestRoute(initialLocation);
+      })
+      .catch((err) => {
+        console.error(err);
+        setTestRoute([]);
+      });
+  };
+
+  useEffect(() => {
+    const locOrders = testRider.tours[0].map((orders) => {
+      return orders.orderId;
+    });
+    setOrders(locOrders);
+
+    const OSRMUri = generateOSRMUri(locOrders);
     axios
       .get(OSRMUri)
       .then((routeResponse) => {
@@ -43,40 +74,60 @@ const MapSimulationTestScreen = () => {
 
         result = polylineCoordinates;
         console.log({ result });
+
         setRoute(result);
         setLoading(false);
+
+        const o1 = {
+          location: { lat: 12.95631342324543, lng: 77.69552272670654 },
+        };
+        const o2 = {
+          location: { lat: 12.956442391181712, lng: 77.69609795192866 },
+        };
+
+        const o3 = {
+          location: { lat: 12.956909126656685, lng: 77.69927838636734 },
+        };
+        const o4 = {
+          location: { lat: 12.956989867581566, lng: 77.70299159014927 },
+        };
+
+        const o5 = {
+          location: { lat: 12.956376345849106, lng: 77.70537417172703 },
+        };
+        const o6 = {
+          location: { lat: 12.9562198811429, lng: 77.70862331171095 },
+        };
+
+        const o7 = {
+          location: { lat: 12.955588885065232, lng: 77.70095405992546 },
+        };
+
+        const o8 = {
+          location: { lat: 12.950098261419818, lng: 77.69985402407599 },
+        };
+
+        const o9 = {
+          location: { lat: 12.956094618924002, lng: 77.69391819331283 },
+        };
+
+        const o10 = {
+          location: { lat: 12.95622074081024, lng: 77.69492603332334 },
+        };
+
+        getRouteBetweenTwoOrders(o9, o10);
+        // getRouteBetweenTwoOrders(locOrders[0], locOrders[1]);
       })
       .catch((err) => {
         console.error(err);
         setRoute([]);
         setLoading(false);
       });
-
-    const dummy = [orders[0], orders[1]];
-    const uri = generateOSRMUri(dummy);
-
-    axios
-      .get(uri)
-      .then((routeResponse) => {
-        let result = [];
-        const encodedPolyline = routeResponse?.data?.routes?.[0]?.geometry;
-        const polylineCoordinates = getPolylineCoordinates(encodedPolyline);
-
-        result = polylineCoordinates;
-        console.log({ dummyResult: result, l: result.length });
-        const initialLocation = [[result[0]]];
-        setFirstRoute(result);
-        setTestRoute(initialLocation);
-      })
-      .catch((err) => {
-        console.error(err);
-        setTestRoute([]);
-      });
   }, []);
 
   const timer = () => {
-    console.log("Called timer out");
-    console.log({ firstRoute, l: firstRoute.length, currentIndex });
+    console.log("Called timer out " + currentIndex);
+    // console.log({ currentIndex });
     if (
       firstRoute &&
       firstRoute.length > 0 &&
@@ -90,12 +141,11 @@ const MapSimulationTestScreen = () => {
 
       const firstLocation = currentLocation?.latitude
         ? currentLocation
-        : route[0];
+        : testRoute[0];
       const nextLocation = newLocation;
       const newPoly = [firstLocation, nextLocation];
       const newTR = [...testRoute, newPoly];
 
-      console.log({ newTR });
       setTestRoute(newTR);
       setCurrentLocation(newLocation);
       setCurrentIndex((currentIndex) => currentIndex + 1);
@@ -103,7 +153,7 @@ const MapSimulationTestScreen = () => {
   };
 
   useEffect(() => {
-    const id = setInterval(timer, 100);
+    const id = setInterval(timer, 1000);
     return () => clearInterval(id);
   }, [currentIndex, firstRoute]);
 
@@ -115,36 +165,95 @@ const MapSimulationTestScreen = () => {
       customMapStyle={mapStandardStyle}
       initialRegion={BangaloreCoordinates}
     >
-      {orders.map((order, i) => {
-        return (
-          <Marker
-            key={order.AWB}
-            identifier={String(order.AWB)}
-            coordinate={{
-              latitude: order.location.lat,
-              longitude: order.location.lng,
-            }}
-            title="Test Title"
-            description="This is the test description"
-          >
-            <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Text style={styles.name}>
-                    {i + 1} {order.names}
-                  </Text>
-                  <Text>{order.address}</Text>
+      <Marker
+        coordinate={{
+          latitude: orders[0].location.lat,
+          longitude: orders[0].location.lng,
+        }}
+        title="Hub Location"
+        description="This is the Hub"
+        pinColor="#39E75F"
+      >
+        <Callout tooltip>
+          <View>
+            <View style={styles.bubble}>
+              <Text style={styles.name}>{orders[0].names}</Text>
+              <Text>{orders[0].address}</Text>
+            </View>
+            <View style={styles.arrowBorder} />
+            <View style={styles.arrow} />
+          </View>
+        </Callout>
+      </Marker>
+
+      {/* {orders.map((order, i) => {
+        if (i !== 0) {
+          return (
+            <Marker
+              key={order.AWB}
+              identifier={String(order.AWB)}
+              coordinate={{
+                latitude: order.location.lat,
+                longitude: order.location.lng,
+              }}
+              title="Test Title"
+              description="This is the test description"
+            >
+              <Callout tooltip>
+                <View>
+                  <View style={styles.bubble}>
+                    <Text style={styles.name}>
+                      {i + 1} {order.names}
+                    </Text>
+                    <Text>{order.address}</Text>
+                  </View>
+                  <View style={styles.arrowBorder} />
+                  <View style={styles.arrow} />
                 </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
-              </View>
-            </Callout>
-          </Marker>
-        );
+              </Callout>
+            </Marker>
+          );
+        }
+      })} */}
+
+      {testRider.tours[0].map((order, i) => {
+        if (i !== 0) {
+          return (
+            <Marker
+              key={order.orderId.AWB}
+              identifier={String(order.orderId.AWB)}
+              coordinate={{
+                latitude: order.orderId.location.lat,
+                longitude: order.orderId.location.lng,
+              }}
+              title="Test Title"
+              description="This is the test description"
+            >
+              <Callout tooltip>
+                <View>
+                  <View style={styles.bubble}>
+                    <Text style={styles.name}>
+                      {i + 1} {order.orderId.names}
+                    </Text>
+                    <Text>{order.orderId.address}</Text>
+                  </View>
+                  <View style={styles.arrowBorder} />
+                  <View style={styles.arrow} />
+                </View>
+              </Callout>
+            </Marker>
+          );
+        }
       })}
 
       {!loading && route?.length > 0 ? (
-        <Polyline coordinates={route} strokeWidth={3} />
+        <Polyline
+          coordinates={route}
+          strokeWidth={6}
+          strokeColor="#4a89f3"
+          tappable
+          linecap="butt"
+        />
       ) : null}
 
       {!loading &&
@@ -161,16 +270,18 @@ const MapSimulationTestScreen = () => {
         ></Marker>
       ) : null}
 
-      {testRoute.map((r, i) => {
-        return (
-          <Polyline
-            key={i}
-            coordinates={r}
-            strokeColor="blue"
-            strokeWidth={4}
-          />
-        );
-      })}
+      {!loading &&
+        testRoute.length > 0 &&
+        testRoute.map((r, i) => {
+          return (
+            <Polyline
+              key={i}
+              coordinates={r}
+              strokeColor="blue"
+              strokeWidth={4}
+            />
+          );
+        })}
     </MapView>
   );
 };

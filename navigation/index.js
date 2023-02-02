@@ -59,10 +59,11 @@ export default function AppNavigator() {
     );
   };
 
-  // let content = <AuthStackNavigator />;
+  let content;
+  // = <AuthStackNavigator />;
   // if (user) {
   content = <MainTabsNavigator />;
-  // }/
+  // }
 
   return <NavigationContainer>{content}</NavigationContainer>;
 }
