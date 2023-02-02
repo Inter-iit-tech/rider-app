@@ -8,10 +8,15 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import MapTestScreen from "./screens/MapTest";
-import MapSimulationTestScreen from "./screens/MapTestSimulation";
-import Login from "./screens/Login";
-import Otp from "./screens/OTP";
+
+import {
+  Login,
+  OTP,
+  MapSimulationTestScreen,
+  MapTestScreen,
+  LocationTest,
+} from "./screens";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const Stack = createNativeStackNavigator();
@@ -23,13 +28,18 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
+            name="LocationTest"
+            component={LocationTest}
+            options={{ headerShown: true, animation: "none" }}
+          />
+          <Stack.Screen
             name="Home"
             component={Login}
             options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
             name="otp"
-            component={Otp}
+            component={OTP}
             options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
