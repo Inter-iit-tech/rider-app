@@ -15,7 +15,6 @@ export default function Login({}) {
   const navigation = useNavigation();
 
   const sendVerification = () => {
-    // navigation.push("otp");
     console.log(mobile);
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
     phoneProvider
