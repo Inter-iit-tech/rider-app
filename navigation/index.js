@@ -6,6 +6,7 @@ import { Icon } from "@rneui/base";
 import {
   Login,
   Otp,
+  Tour,
   MapTestScreen,
   MapSimulationTestScreen,
 } from "./../screens";
@@ -39,7 +40,13 @@ export default function AppNavigator() {
   const MainTabsNavigator = () => {
     return (
       <MainTabs.Navigator>
-        {/* <MainTabs.Screen name="Tour" component={Tour} /> */}
+        <MainTabs.Screen
+          name="Orders"
+          component={Tour}
+          options={{
+            tabBarIcon: () => <Icon name="list" type="font-awesome-5" />,
+          }}
+        />
         <MainTabs.Screen
           name="Map"
           component={MapTestScreen}
