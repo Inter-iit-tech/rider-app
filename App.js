@@ -2,16 +2,19 @@
 import "react-native-gesture-handler";
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from "react-native";
 
-import { AuthContextProvider } from "./contexts/authContext";
 import AppNavigator from "./navigation";
+import { AuthContextProvider } from "./contexts/authContext";
+import { TourContextProvider } from "./contexts/tourContext";
 
 export default function App() {
   console.log(StatusBar.currentHeight);
   return (
     <AuthContextProvider>
-      <SafeAreaView style={styles.container}>
-        <AppNavigator />
-      </SafeAreaView>
+      <TourContextProvider>
+        <SafeAreaView style={styles.container}>
+          <AppNavigator />
+        </SafeAreaView>
+      </TourContextProvider>
     </AuthContextProvider>
   );
 }
