@@ -24,23 +24,28 @@ export default function OTP({ route }) {
       });
     });
   };
-  const updateLoggedUser = async (user) => {
+  const updateLoggedUser = async (userCredential) => {
     const token = await registerForPushNotificationsAsync();
     const url = `/api/v1/rider/update/${user.phoneNumber}`;
     const data = {
       token: token,
     };
 
-    axios
-      .post(url, data)
-      .then((res) => {
-        console.log(res.data.rider);
-        // [TODO] set user from db given from res instead of firebase
-        authContext.login(user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (userCredential.additionalUserInfo.isNewUser) {
+      axios
+        .post(url, data)
+        .then((res) => {
+          console.log(res.data.rider);
+          // TODO: set user from db given from res instead of firebase
+          authContext.login(userCredential.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      // TODO: set user from db given from res instead of firebase
+      authContext.login(userCredential.user);
+    }
   };
 
   const confirmCode = async () => {
@@ -55,7 +60,7 @@ export default function OTP({ route }) {
       .then(async (userCredential) => {
         setOTP("");
         console.log("Getting token");
-        updateLoggedUser(userCredential.user);
+        updateLoggedUser(userCredential);
         Alert.alert("OTP Successful. Welcome to Dashboard.");
         // resetNavigation();
       })
