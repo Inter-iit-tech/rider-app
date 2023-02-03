@@ -22,7 +22,11 @@ export default function AppNavigator() {
         <AuthStack.Screen
           name="Home"
           component={Login}
-          options={{ title: "Login", headerShown: false, animation: "none" }}
+          options={{
+            title: "Login",
+            headerShown: false,
+            animation: "none",
+          }}
         />
         <AuthStack.Screen
           name="otp"

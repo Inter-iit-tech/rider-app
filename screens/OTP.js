@@ -3,10 +3,11 @@ import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import { Button } from "@rneui/themed";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import firebase from "firebase/compat";
-
+import axios from "./../utils/axios/request";
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
 import useAuthContext from "../hooks/useAuthContext";
+import registerForPushNotificationsAsync from "./../utils/pushToken";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
@@ -23,9 +24,30 @@ export default function OTP({ route }) {
       });
     });
   };
+  const updateLoggedUser = async (userCredential) => {
+    const token = await registerForPushNotificationsAsync();
+    const url = `/api/v1/rider/update/${userCredential.user.phoneNumber}`;
+    const data = {
+      token: token,
+    };
+    if (userCredential.additionalUserInfo.isNewUser) {
+      axios
+        .post(url, data)
+        .then((res) => {
+          console.log(res.data.rider);
+          // TODO: set user from db given from res instead of firebase
+          authContext.login(userCredential.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      // TODO: set user from db given from res instead of firebase
+      authContext.login(userCredential.user);
+    }
+  };
 
-  const confirmCode = () => {
-    console.log(otp);
+  const confirmCode = async () => {
     const verificationId = route.params.verificationId;
     const credential = firebase.auth.PhoneAuthProvider.credential(
       verificationId,
@@ -34,9 +56,10 @@ export default function OTP({ route }) {
     firebase
       .auth()
       .signInWithCredential(credential)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setOTP("");
-        authContext.login(userCredential.user);
+        console.log("Getting token");
+        updateLoggedUser(userCredential);
         Alert.alert("OTP Successful. Welcome to Dashboard.");
         // resetNavigation();
       })
