@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
+// TODO: Persist login state
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
