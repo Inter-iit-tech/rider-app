@@ -20,6 +20,7 @@ export default function Login({}) {
     phoneProvider
       .verifyPhoneNumber(mobile, recaptchaVerifier.current)
       .then((verificationId) => {
+        console.log(verificationId);
         navigation.navigate("otp", {
           verificationId: verificationId,
         });
