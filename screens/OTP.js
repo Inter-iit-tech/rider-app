@@ -25,13 +25,12 @@ export default function OTP({ route }) {
     });
   };
   const updateLoggedUser = async (userCredential) => {
+    const token = await registerForPushNotificationsAsync();
+    const url = `/api/v1/rider/update/${userCredential.user.phoneNumber}`;
+    const data = {
+      token: token,
+    };
     if (userCredential.additionalUserInfo.isNewUser) {
-      const token = await registerForPushNotificationsAsync();
-      const url = `/api/v1/rider/update/${userCredential.user.phoneNumber}`;
-      const data = {
-        token: token,
-      };
-
       axios
         .post(url, data)
         .then((res) => {

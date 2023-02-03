@@ -8,6 +8,7 @@ const fetchTour = async () => {
   // TODO: fetching logic to get tours from the API
   return new Promise((resolve) => {
     setTimeout(() => {
+      console.log("Fetching tours");
       resolve(orders);
     }, 3000);
   });
