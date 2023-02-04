@@ -3,13 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "@rneui/base";
 
-import {
-  Login,
-  Otp,
-  Tour,
-  MapTestScreen,
-  MapSimulationTestScreen,
-} from "./../screens";
+import { Login, Otp, Tour, MapSimulation, Map } from "./../screens";
 import useAuthContext from "../hooks/useAuthContext";
 
 export default function AppNavigator() {
@@ -54,7 +48,15 @@ export default function AppNavigator() {
         />
         <MainTabs.Screen
           name="Map"
-          component={MapSimulationTestScreen}
+          component={Map}
+          options={{
+            tabBarIcon: () => <Icon name="map" type="font-awesome-5" />,
+          }}
+        />
+
+        <MainTabs.Screen
+          name="Tour Simulation"
+          component={MapSimulation}
           options={{
             tabBarIcon: () => <Icon name="route" type="font-awesome-5" />,
           }}
@@ -65,8 +67,8 @@ export default function AppNavigator() {
 
   // let content = <AuthStackNavigator />;
   // if (user) {
-  content = <MainTabsNavigator />;
-  // }/
+  let content = <MainTabsNavigator />;
+  // }
 
   return <NavigationContainer>{content}</NavigationContainer>;
 }

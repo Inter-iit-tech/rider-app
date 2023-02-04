@@ -30,21 +30,21 @@ export default function OTP({ route }) {
     const data = {
       token: token,
     };
-    if (userCredential.additionalUserInfo.isNewUser) {
-      axios
-        .post(url, data)
-        .then((res) => {
-          console.log(res.data.rider);
-          // TODO: set user from db given from res instead of firebase
-          authContext.login(userCredential.user);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      // TODO: set user from db given from res instead of firebase
-      authContext.login(userCredential.user);
-    }
+    // if (userCredential.additionalUserInfo.isNewUser) {
+    axios
+      .post(url, data)
+      .then((res) => {
+        console.log(res.data.rider);
+        // TODO: set user from db given from res instead of firebase
+        authContext.login(res.data.rider);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // } else {
+    //   // TODO: set user from db given from res instead of firebase
+    //   authContext.login(userCredential.user);
+    // }
   };
 
   const confirmCode = async () => {
