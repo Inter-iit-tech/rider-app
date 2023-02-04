@@ -9,9 +9,59 @@ import { Button, FAB, Icon } from "@rneui/base";
 
 import Order from "../components/Order";
 import useTourContext from "../hooks/useTourContext";
+import useAuthContext from "../hooks/useAuthContext";
+
+import * as Location from "expo-location";
+
+import axios from "../utils/axios/request";
 
 const Tour = () => {
-  const { tour, loading, error, synchroniseTourData } = useTourContext();
+  const { tour, loading, error, synchroniseTourData, updateTour } =
+    useTourContext();
+
+  const { user } = useAuthContext();
+
+  const fetchLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    console.log({ status });
+
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+
+    return location;
+  };
+
+  const markOrderStatus = async (status) => {
+    console.log(tour[0]);
+    console.log({ user });
+
+    const riderID = user?._id || "63da31fb4841bae76cccfd8a";
+    const orderID = tour?.[0]?.productID;
+    const location = tour?.[0]?.location;
+
+    let { coords } = await fetchLocation();
+
+    axios
+      .post(`/api/v1/rider/${riderID}/order-status/${orderID}`, {
+        order: {
+          status,
+          location,
+          riderLocation: { lat: coords?.latitude, lng: coords?.longitude },
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+
+        updateTour();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (loading) {
     return (
@@ -58,7 +108,7 @@ const Tour = () => {
               name={item.names}
               address={item.address}
               awb={item.AWB}
-              productID={item.product_id}
+              productID={item.product}
               highlighted={index === 0}
             />
           );
@@ -74,6 +124,7 @@ const Tour = () => {
         color="tomato"
         title="Skip Order"
         icon={{ name: "cross", type: "entypo", color: "white" }}
+        onPress={async () => await markOrderStatus(false)}
       />
       <FAB
         placement="right"
@@ -82,6 +133,7 @@ const Tour = () => {
         color="limegreen"
         title="Next Order"
         icon={{ name: "check", type: "entypo", color: "white" }}
+        onPress={async () => await markOrderStatus(true)}
       />
     </>
   );
