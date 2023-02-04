@@ -20,10 +20,6 @@ const MapSimulation = () => {
   const [tourPath, setTourPath] = useState([]);
   const [loadingPath, setLoadingPath] = useState(false);
   const [simulationPaths, setSimulationPaths] = useState([]);
-  const [currentSimulation, setCurrentSimulation] = useState({
-    currentIndex: -1,
-    currentPath: [],
-  });
   const [startSimulation, setStartSimulation] = useState(false);
 
   const getTourPath = async (tour) => {
@@ -113,6 +109,7 @@ const MapSimulation = () => {
           title="Hub Location"
           description="This is the Hub"
           pinColor="#39E75F"
+          identifier={String(depot.AWB)}
         >
           <Callout tooltip>
             <View>
