@@ -42,6 +42,7 @@ export default function OTP({ route }) {
           console.log(err);
         });
     } else {
+      // TODO: GET request to user endpoint
       // TODO: set user from db given from res instead of firebase
       authContext.login(userCredential.user);
     }
