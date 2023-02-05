@@ -49,7 +49,7 @@ const MapSimulator = ({ paths, setSimulationEnded }) => {
   };
 
   useEffect(() => {
-    setTimeout(timer, 10);
+    setTimeout(timer, 200);
   }, [currentIndex]);
 
   return (

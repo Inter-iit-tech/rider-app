@@ -158,15 +158,17 @@ const MapSimulation = () => {
             );
         })}
 
-        {!loading && tourPath?.length > 0 ? (
-          <Polyline
-            coordinates={tourPath}
-            strokeWidth={6}
-            strokeColor="#4a89f3"
-            tappable
-            linecap="butt"
-          />
-        ) : null}
+        {!loading && simulationPaths?.length > 0
+          ? simulationPaths.map((tour) => {
+              <Polyline
+                coordinates={tour}
+                strokeWidth={6}
+                strokeColor="#4a89f3"
+                tappable
+                linecap="butt"
+              />;
+            })
+          : null}
 
         {startSimulation && simulationPaths.length > 0 ? (
           <MapSimulator
@@ -176,7 +178,7 @@ const MapSimulation = () => {
         ) : null}
       </MapView>
 
-      {!tourPath.length > 0 ? (
+      {/* {!tourPath.length > 0 ? (
         <FAB
           placement="left"
           size="large"
@@ -186,10 +188,12 @@ const MapSimulation = () => {
           icon={{ name: "check", type: "entypo", color: "white" }}
           loading={loadingPath}
           onPress={async () => {
-            getTourPath(tour);
+            getSimulationPaths(tour);
+            // getTourPath(tour);
           }}
         />
-      ) : !simulationPaths.length > 0 ? (
+      ) :  */}
+      {!simulationPaths.length > 0 ? (
         <FAB
           placement="right"
           size="large"
