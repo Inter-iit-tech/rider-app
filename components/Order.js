@@ -87,8 +87,9 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
     borderColor: "#AFAFAF",
-    borderRadius: 5,
+    borderRadius: 15,
     marginBottom: 5,
+    boxShadow: "5px 5px rgba(0, 0, 0, 0.2)",
   },
   locationContainer: {
     paddingTop: 4,

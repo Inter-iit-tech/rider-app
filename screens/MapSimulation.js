@@ -10,7 +10,7 @@ import MapView, {
 import axios from "axios";
 
 import useTourContext from "../hooks/useTourContext";
-import { BangaloreCoordinates } from "../utils/constants";
+import { BangaloreCoordinates, IITBBSCoordinates } from "../utils/constants";
 import { generateOSRMUri, getPolylineCoordinates } from "../utils/routeUtils";
 import MapSimulator from "../components/MapSimulator";
 
@@ -89,6 +89,10 @@ const MapSimulation = () => {
     );
   }
 
+  const setEndSimulation = () => {
+    setStartSimulation(false);
+  };
+
   const depot = tour[0];
 
   return (
@@ -98,30 +102,33 @@ const MapSimulation = () => {
         style={styles.map}
         rotateEnabled
         customMapStyle={mapStandardStyle}
-        initialRegion={BangaloreCoordinates}
+        initialRegion={IITBBSCoordinates}
+        // initialRegion={BangaloreCoordinates}
       >
-        <Marker
-          // Depot Location
-          coordinate={{
-            latitude: depot.location.lat,
-            longitude: depot.location.lng,
-          }}
-          title="Hub Location"
-          description="This is the Hub"
-          pinColor="#39E75F"
-          identifier={String(depot.AWB)}
-        >
-          <Callout tooltip>
-            <View>
-              <View style={styles.bubble}>
-                <Text style={styles.name}>{depot.names}</Text>
-                <Text>{depot.address}</Text>
+        {depot ? (
+          <Marker
+            // Depot Location
+            coordinate={{
+              latitude: depot.location.lat,
+              longitude: depot.location.lng,
+            }}
+            title="Hub Location"
+            description="This is the Hub"
+            pinColor="#39E75F"
+            identifier={String(depot.AWB)}
+          >
+            <Callout tooltip>
+              <View>
+                <View style={styles.bubble}>
+                  <Text style={styles.name}>{depot.names}</Text>
+                  <Text>{depot.address}</Text>
+                </View>
+                <View style={styles.arrowBorder} />
+                <View style={styles.arrow} />
               </View>
-              <View style={styles.arrowBorder} />
-              <View style={styles.arrow} />
-            </View>
-          </Callout>
-        </Marker>
+            </Callout>
+          </Marker>
+        ) : null}
 
         {tour.map((order, i) => {
           if (order.address !== "Depot Location")
@@ -162,7 +169,10 @@ const MapSimulation = () => {
         ) : null}
 
         {startSimulation && simulationPaths.length > 0 ? (
-          <MapSimulator paths={simulationPaths} />
+          <MapSimulator
+            paths={simulationPaths}
+            setSimulationEnded={setEndSimulation}
+          />
         ) : null}
       </MapView>
 

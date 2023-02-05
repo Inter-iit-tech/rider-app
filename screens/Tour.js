@@ -14,6 +14,7 @@ import useAuthContext from "../hooks/useAuthContext";
 import * as Location from "expo-location";
 
 import axios from "../utils/axios/request";
+import { depotProduct } from "../utils/constants";
 
 const Tour = () => {
   const { tour, loading, error, synchroniseTourData, updateTour } =
@@ -40,7 +41,7 @@ const Tour = () => {
     console.log({ user });
 
     const riderID = user?._id || "63da31fb4841bae76cccfd8a";
-    const orderID = tour?.[0]?.productID;
+    const orderID = tour?.[0]?._id;
     const location = tour?.[0]?.location;
 
     let { coords } = await fetchLocation();
@@ -55,12 +56,20 @@ const Tour = () => {
       })
       .then((res) => {
         console.log(res.data);
-
         updateTour();
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const startTour = () => {
+    markOrderStatus(true);
+  };
+
+  const endTour = () => {
+    markOrderStatus(true);
+    synchroniseTourData();
   };
 
   if (loading) {
@@ -97,6 +106,8 @@ const Tour = () => {
     );
   }
 
+  if (tour?.length === 0) return <></>;
+
   return (
     <>
       <FlatList
@@ -117,24 +128,37 @@ const Tour = () => {
         ListFooterComponent={View}
         ListFooterComponentStyle={styles.footerPadView}
       />
-      <FAB
-        placement="left"
-        size="large"
-        visible={true}
-        color="tomato"
-        title="Skip Order"
-        icon={{ name: "cross", type: "entypo", color: "white" }}
-        onPress={async () => await markOrderStatus(false)}
-      />
-      <FAB
-        placement="right"
-        size="large"
-        visible={true}
-        color="limegreen"
-        title="Next Order"
-        icon={{ name: "check", type: "entypo", color: "white" }}
-        onPress={async () => await markOrderStatus(true)}
-      />
+      {tour?.[0]?.product !== depotProduct ? (
+        <>
+          <FAB
+            placement="left"
+            size="large"
+            visible={true}
+            color="tomato"
+            title="Skip Order"
+            icon={{ name: "cross", type: "entypo", color: "white" }}
+            onPress={async () => await markOrderStatus(false)}
+          />
+          <FAB
+            placement="right"
+            size="large"
+            visible={true}
+            color="limegreen"
+            title="Next Order"
+            icon={{ name: "check", type: "entypo", color: "white" }}
+            onPress={async () => await markOrderStatus(true)}
+          />
+        </>
+      ) : tour?.length !== 1 ? (
+        <FAB
+          size="large"
+          color="limegreen"
+          title="Start Tour"
+          onPress={startTour}
+        />
+      ) : (
+        <FAB size="large" color="tomato" title="End Tour" onPress={endTour} />
+      )}
     </>
   );
 };

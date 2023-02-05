@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Marker, Polyline } from "react-native-maps";
 
-const MapSimulator = ({ paths }) => {
+const MapSimulator = ({ paths, setSimulationEnded }) => {
   const [currentPath, setCurrentPath] = useState(paths[0]);
   const [polylineArray, setPolylineArray] = useState([[paths[0][0]]]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,12 +43,13 @@ const MapSimulator = ({ paths }) => {
         }, 2000);
       } else {
         console.log("Called Timer else else");
+        setSimulationEnded();
       }
     }
   };
 
   useEffect(() => {
-    setTimeout(timer, 2);
+    setTimeout(timer, 10);
   }, [currentIndex]);
 
   return (
