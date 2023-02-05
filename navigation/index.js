@@ -5,6 +5,8 @@ import { Icon } from "@rneui/base";
 
 import { Login, Otp, Tour, MapSimulation, Map } from "./../screens";
 import useAuthContext from "../hooks/useAuthContext";
+import Wrapper from "../utils/Wrapper";
+import { TourContextProvider } from "../contexts/tourContext";
 
 export default function AppNavigator() {
   const { user } = useAuthContext();
@@ -65,10 +67,16 @@ export default function AppNavigator() {
     );
   };
 
-  // let content = <AuthStackNavigator />;
-  // if (user) {
-  let content = <MainTabsNavigator />;
-  // }
+  let content = <AuthStackNavigator />;
+  if (user) {
+    content = (
+      <TourContextProvider>
+        <Wrapper>
+          <MainTabsNavigator />
+        </Wrapper>
+      </TourContextProvider>
+    );
+  }
 
   return <NavigationContainer>{content}</NavigationContainer>;
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { SafeAreaView, StyleSheet, StatusBar } from "react-native";
 import * as Notifications from "expo-notifications";
-import AppNavigator from "../navigation";
 import useTourContext from "../hooks/useTourContext";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -37,7 +36,7 @@ export default function Wrapper({ children }) {
     };
   }, []);
 
-  return <AppNavigator />;
+  return children;
 }
 
 const styles = StyleSheet.create({
