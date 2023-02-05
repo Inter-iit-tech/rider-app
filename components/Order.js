@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderColor: "#AFAFAF",
     borderRadius: 15,
     marginBottom: 5,
-    boxShadow: "5px 5px rgba(0, 0, 0, 0.2)",
+    overflow: "hidden",
   },
   locationContainer: {
     paddingTop: 4,

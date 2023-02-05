@@ -109,7 +109,7 @@ const Tour = () => {
   if (tour?.length === 0) return <></>;
 
   return (
-    <>
+    <View style={styles.container}>
       <FlatList
         style={styles.list}
         data={tour}
@@ -159,17 +159,21 @@ const Tour = () => {
       ) : (
         <FAB size="large" color="tomato" title="End Tour" onPress={endTour} />
       )}
-    </>
+    </View>
   );
 };
 
 export default Tour;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    paddingBottom: 20,
+  },
   list: {
     paddingHorizontal: 10,
     paddingTop: 15,
-    backgroundColor: "white",
   },
   footerPadView: {
     height: 90,
