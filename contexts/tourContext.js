@@ -11,23 +11,23 @@ import testRider from "../samples/riderProfile";
 const fetchTour = async (riderId) => {
   console.log("Called fetchTours");
   // TODO: fetching logic to get tours from the API
-  //   const url = `/api/v1/rider/${riderId}`;
-  //   console.log({ url });
-  //   const res = await axios.get(url);
-  //   const currentTour = res?.data?.rider?.tours[0];
-  //   const formattedTour = currentTour.map((t) => t.orderId);
-  //   return formattedTour;
+  const url = `/api/v1/rider/${riderId}`;
+  console.log({ url });
+  const res = await axios.get(url);
+  const currentTour = res?.data?.rider?.tours[0];
+  const formattedTour = currentTour.map((t) => t.orderId);
+  return formattedTour;
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("Fetching tour");
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     console.log("Fetching tour");
 
-      const currentTour = testRider.tours[0];
-      const formattedTour = currentTour.map((t) => t.orderId);
-      console.log({ formattedTour });
-      resolve(formattedTour);
-    }, 100);
-  });
+  //     const currentTour = testRider.tours[0];
+  //     const formattedTour = currentTour.map((t) => t.orderId);
+  //     console.log({ formattedTour });
+  //     resolve(formattedTour);
+  //   }, 100);
+  // });
 };
 
 export const TourContext = createContext();
