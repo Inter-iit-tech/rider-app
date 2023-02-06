@@ -1,5 +1,12 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
 import { Button } from "@rneui/themed";
@@ -35,7 +42,10 @@ export default function Login({}) {
     setMobile(text);
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+    >
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
@@ -71,7 +81,7 @@ export default function Login({}) {
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
