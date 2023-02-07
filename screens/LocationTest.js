@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Platform, Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 import * as Location from "expo-location";
 
@@ -36,10 +36,7 @@ const LocationTest = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    flex: 1,
     padding: 20,
     width: "100%",
   },
@@ -52,10 +49,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   content: {
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
     marginVertical: 30,
   },
   heading: {

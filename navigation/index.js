@@ -7,6 +7,7 @@ import { Login, Otp, Tour, MapSimulation, Map } from "./../screens";
 import useAuthContext from "../hooks/useAuthContext";
 import Wrapper from "../utils/Wrapper";
 import { TourContextProvider } from "../contexts/tourContext";
+import COLORS from "../assets/colors/colors";
 
 export default function AppNavigator() {
   const { user } = useAuthContext();
@@ -14,14 +15,20 @@ export default function AppNavigator() {
   const AuthStack = createNativeStackNavigator();
   const AuthStackNavigator = () => {
     return (
-      <AuthStack.Navigator>
+      <AuthStack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "none",
+          contentStyle: {
+            backgroundColor: "white",
+          },
+        }}
+      >
         <AuthStack.Screen
           name="Home"
           component={Login}
           options={{
             title: "Login",
-            headerShown: false,
-            animation: "none",
           }}
         />
         <AuthStack.Screen
@@ -29,8 +36,6 @@ export default function AppNavigator() {
           component={Otp}
           options={{
             title: "Verify OTP",
-            headerShown: false,
-            animation: "none",
           }}
         />
       </AuthStack.Navigator>
@@ -40,19 +45,38 @@ export default function AppNavigator() {
   const MainTabs = createBottomTabNavigator();
   const MainTabsNavigator = () => {
     return (
-      <MainTabs.Navigator>
+      <MainTabs.Navigator
+        sceneContainerStyle={{ backgroundColor: "white" }}
+        screenOptions={{
+          tabBarActiveTintColor: COLORS.blue,
+        }}
+      >
         <MainTabs.Screen
           name="Orders"
           component={Tour}
           options={{
-            tabBarIcon: () => <Icon name="list" type="font-awesome-5" />,
+            tabBarIcon: ({ color, size }) => (
+              <Icon
+                name="list"
+                type="font-awesome-5"
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
         <MainTabs.Screen
           name="Map"
           component={Map}
           options={{
-            tabBarIcon: () => <Icon name="map" type="font-awesome-5" />,
+            tabBarIcon: ({ color, size }) => (
+              <Icon
+                name="map"
+                type="font-awesome-5"
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
 
@@ -60,7 +84,14 @@ export default function AppNavigator() {
           name="Tour Simulation"
           component={MapSimulation}
           options={{
-            tabBarIcon: () => <Icon name="route" type="font-awesome-5" />,
+            tabBarIcon: ({ color, size }) => (
+              <Icon
+                name="route"
+                type="font-awesome-5"
+                color={color}
+                size={size}
+              />
+            ),
           }}
         />
       </MainTabs.Navigator>

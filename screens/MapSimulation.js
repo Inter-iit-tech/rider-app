@@ -233,14 +233,6 @@ const mapStandardStyle = [
 ];
 
 const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    backgroundColor: "white",
-  },
-  footerPadView: {
-    height: 90,
-  },
   centerContent: {
     flex: 1,
     justifyContent: "center",

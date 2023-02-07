@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import { Button } from "@rneui/themed";
-import { CommonActions, useNavigation } from "@react-navigation/native";
 import firebase from "firebase/compat";
 import axios from "./../utils/axios/request";
 import MobileLogo from "./../assets/mobile.png";
@@ -11,19 +10,8 @@ import registerForPushNotificationsAsync from "./../utils/pushToken";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
-  const navigation = useNavigation();
   const authContext = useAuthContext();
 
-  // programmatically navigating to the maps page is no longer necessary
-  // and the resetNavigation function can be omitted
-  const resetNavigation = () => {
-    navigation.dispatch((state) => {
-      return CommonActions.reset({
-        index: 0,
-        routes: [{ name: "Maps" }],
-      });
-    });
-  };
   const updateLoggedUser = async (userCredential) => {
     const token = await registerForPushNotificationsAsync();
     const url = `/api/v1/rider/update/${userCredential.user.phoneNumber}`;
@@ -37,6 +25,7 @@ export default function OTP({ route }) {
         console.log(res.data.rider);
         // TODO: set user from db given from res instead of firebase
         authContext.login(res.data.rider);
+        Alert.alert("OTP Successful. Welcome to Dashboard.");
       })
       .catch((err) => {
         console.log(err);
@@ -60,13 +49,9 @@ export default function OTP({ route }) {
         setOTP("");
         console.log("Getting token");
         updateLoggedUser(userCredential);
-        Alert.alert("OTP Successful. Welcome to Dashboard.");
-        // resetNavigation();
       })
       .catch((error) => {
-        // show an alert in case of error
         console.log(error);
-
         Alert.alert("Invalid otp or otp expired");
       });
   };
@@ -86,7 +71,7 @@ export default function OTP({ route }) {
       </View>
       <View>
         <View style={styles.content}>
-          <Text style={styles.heading}>OTP Confirmation '</Text>
+          <Text style={styles.heading}>OTP Confirmation</Text>
           <Text style={styles.subtext}>Please enter the one time password</Text>
           <View style={{ width: "100%", marginTop: 40 }}>
             <Input
@@ -111,10 +96,7 @@ export default function OTP({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    flex: 1,
     padding: 20,
     width: "100%",
   },
@@ -127,10 +109,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   content: {
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
     marginVertical: 30,
   },
   heading: {

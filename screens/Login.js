@@ -5,7 +5,6 @@ import {
   View,
   Image,
   KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
@@ -41,11 +40,9 @@ export default function Login({}) {
   const handleTextChange = (text) => {
     setMobile(text);
   };
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
@@ -87,10 +84,7 @@ export default function Login({}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    flex: 1,
     padding: 20,
     width: "100%",
   },
@@ -103,10 +97,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   content: {
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
     marginVertical: 30,
   },
   heading: {
