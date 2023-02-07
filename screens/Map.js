@@ -10,7 +10,7 @@ import MapView, {
 import axios from "axios";
 
 import useTourContext from "../hooks/useTourContext";
-import { BangaloreCoordinates, IITBBSCoordinates } from "../utils/constants";
+import { BangaloreCoordinates } from "../utils/constants";
 import { generateOSRMUri, getPolylineCoordinates } from "../utils/routeUtils";
 
 const MapSimulation = () => {
@@ -76,7 +76,7 @@ const MapSimulation = () => {
         style={styles.map}
         rotateEnabled
         customMapStyle={mapStandardStyle}
-        initialRegion={IITBBSCoordinates}
+        initialRegion={BangaloreCoordinates}
       >
         <Marker
           // Depot Location
