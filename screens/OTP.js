@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import { Button } from "@rneui/themed";
 import firebase from "firebase/compat";
 import axios from "./../utils/axios/request";
@@ -61,7 +68,7 @@ export default function OTP({ route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.imageContainer}>
         <Image
           source={MobileLogo}
@@ -90,7 +97,7 @@ export default function OTP({ route }) {
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
