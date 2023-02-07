@@ -14,19 +14,21 @@ import firebase from "firebase/compat";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
 
 export default function Login({}) {
   const [mobile, setMobile] = useState("+91");
   const recaptchaVerifier = useRef(null);
   const navigation = useNavigation();
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const sendVerification = () => {
-    console.log(mobile);
+    showLoading();
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
     phoneProvider
       .verifyPhoneNumber(mobile, recaptchaVerifier.current)
       .then((verificationId) => {
-        console.log(verificationId);
+        hideLoading();
         navigation.navigate("otp", {
           verificationId: verificationId,
         });

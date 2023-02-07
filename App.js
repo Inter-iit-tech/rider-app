@@ -6,6 +6,7 @@ import { StyleSheet, SafeAreaView, Platform, StatusBar } from "react-native";
 import * as Notifications from "expo-notifications";
 import AppNavigator from "./navigation";
 import { AuthContextProvider } from "./contexts/authContext";
+import { LoadingContextProvider } from "./contexts/LoadingContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,7 +20,9 @@ export default function App() {
   return (
     <AuthContextProvider>
       <SafeAreaView style={styles.container}>
-        <AppNavigator />
+        <LoadingContextProvider>
+          <AppNavigator />
+        </LoadingContextProvider>
       </SafeAreaView>
     </AuthContextProvider>
   );

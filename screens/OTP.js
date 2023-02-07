@@ -14,10 +14,12 @@ import MobileLogo from "./../assets/mobile.png";
 import Input from "../components/Input";
 import useAuthContext from "../hooks/useAuthContext";
 import registerForPushNotificationsAsync from "./../utils/pushToken";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
 
 export default function OTP({ route }) {
   const [otp, setOTP] = useState("");
   const authContext = useAuthContext();
+  const [loading, showLoading, hideLoading] = useLoadingIndicator();
 
   const updateLoggedUser = async (userCredential) => {
     const token = await registerForPushNotificationsAsync();
@@ -44,6 +46,7 @@ export default function OTP({ route }) {
   };
 
   const confirmCode = async () => {
+    showLoading();
     const verificationId = route.params.verificationId;
     const credential = firebase.auth.PhoneAuthProvider.credential(
       verificationId,
@@ -61,6 +64,7 @@ export default function OTP({ route }) {
         console.log(error);
         Alert.alert("Invalid otp or otp expired");
       });
+    hideLoading();
   };
 
   const handleTextChange = (text) => {
