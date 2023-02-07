@@ -8,6 +8,7 @@ import useAuthContext from "../hooks/useAuthContext";
 import Wrapper from "../utils/Wrapper";
 import { TourContextProvider } from "../contexts/tourContext";
 import COLORS from "../assets/colors/colors";
+import LogoutButton from "../components/LogoutButton";
 
 export default function AppNavigator() {
   const { user } = useAuthContext();
@@ -49,6 +50,7 @@ export default function AppNavigator() {
         sceneContainerStyle={{ backgroundColor: "white" }}
         screenOptions={{
           tabBarActiveTintColor: COLORS.blue,
+          headerRight: LogoutButton,
         }}
       >
         <MainTabs.Screen
