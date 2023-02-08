@@ -140,6 +140,7 @@ const MapSimulation = () => {
                   latitude: order.location.lat,
                   longitude: order.location.lng,
                 }}
+                pinColor={order?.type === "pickup" ? "yellow" : "red"}
               >
                 <Callout tooltip>
                   <View>
