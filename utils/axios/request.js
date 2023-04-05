@@ -1,3 +1,3 @@
 import axios from "axios";
 
-export default axios.create({ baseURL: "http://10.10.28.114:3000" });
+export default axios.create({ baseURL: "https://main-backend-rbb2mcozsa-em.a.run.app" });
