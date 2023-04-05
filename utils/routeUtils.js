@@ -2,7 +2,7 @@ import polyline from "@mapbox/polyline";
 
 export const generateOSRMUri = (orders) => {
   // const baseURL = "http://router.project-osrm.org";
-  const baseURL = "http://172.20.10.5:5000";
+  const baseURL = "https://osrm-mld-rbb2mcozsa-em.a.run.app";
   const endPoint = "route/v1/driving";
 
   const queryParams = {
